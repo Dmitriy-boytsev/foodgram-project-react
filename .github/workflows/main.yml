@@ -151,8 +151,7 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
-          Деплой foodgram выполнен!
+          Деплой едаграма выполнен!
           Автор: ${{ github.actor }}
           Ветка: ${{ github.ref }}
           Коммит: ${{(github.event.commits[0].message)}}
-          
