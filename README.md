@@ -10,7 +10,7 @@
 
 
 
-[![Foodgram workflow](https://github.com/artemon1981/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/artemon1981/foodgram-project-react/actions/workflows/main.yml)
+[![Main Kittygram workflow](https://github.com/Dmitriy-boytsev/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/Dmitriy-boytsev/kittygram_final/actions/workflows/main.yml/)
 
 
 
@@ -22,7 +22,7 @@
 
 
   
-# Едаграм - блог для любителей покушать. 
+# Footgram - блог для любителей покушать. 
 
 </div>
 
@@ -30,7 +30,7 @@
  
 ## Описание проекта: 
  
-Проект Kittygram даёт возможность пользователям поделиться  рецептами своих любимых блюд. Зарегистрированные пользователи могут создавать, просматривать, редактировать и удалять свои рецепты, а также подписыватся на других пользователей и добавлять их рецепты в "список покупок". "Prod версия" проверена, протестирована и готова для внедрения в производственную среду или в реальное использование пользователями.
+Проект Foodgram даёт возможность пользователям поделиться  рецептами своих любимых блюд. Зарегистрированные пользователи могут создавать, просматривать, редактировать и удалять свои рецепты, а также подписыватся на других пользователей и добавлять их рецепты в "список покупок". "Prod версия" проверена, протестирована и готова для внедрения в производственную среду или в реальное использование пользователями.
 
 ## Стек проекта:
 
@@ -45,14 +45,14 @@
 - React (frontend)
 
 ##  Cсылка на развёрнутое приложение в сети: 
-- #### https://django-training.ru/ 
+- #### https://diplompraktikum.ddns.net/
 
 ## Как развернуть: 
  
  - Клонироуйте репозиторий:
  
     ```bash
-    git clone git@github.com:artemon1981/foodgram-project-react.git
+    git clone git@github.com:Dmitriy-boytsev/foodgram-project-react.git
     ```
  - Создайте файл .env
 
@@ -100,9 +100,9 @@
 
  ## Автор 
  
-Остриков Павел
+Бойцев Дмитрий 
 
 
   
-![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=artemon1981)
+![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Dmitriy-boytsev)
 
