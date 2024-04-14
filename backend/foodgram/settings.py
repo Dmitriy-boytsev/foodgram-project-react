@@ -4,6 +4,8 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
+from recipes.constants import SettingsConstants
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +28,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_filters',
-    'api.apps.ApiConfig',
     'recipes.apps.RecipesConfig',
+    'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'colorfield',
 ]
@@ -136,6 +138,6 @@ DJOSER = {
 
 AUTH_USER_MODEL = 'users.User'
 
-PAGE_SIZE = 6
+PAGE_SIZE = SettingsConstants.PAGE_SIZE
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -10,7 +10,7 @@
 
 
 
-[![Main Kittygram workflow](https://github.com/Dmitriy-boytsev/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/Dmitriy-boytsev/kittygram_final/actions/workflows/main.yml/)
+[![Main Kittygram workflow](https://github.com/dmitriy-boytsev/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/dmitriy-boytsev/foodgram-project-react/actions/workflows/main.yml)
 
 
 
@@ -46,6 +46,10 @@
 
 ##  Cсылка на развёрнутое приложение в сети: 
 - #### https://diplompraktikum.ddns.net/
+
+##  Cсылка на документацию в сети: 
+- #### https://diplompraktikum.ddns.net/api/docs
+
 
 ## Как развернуть: 
  
@@ -105,4 +109,3 @@
 
   
 ![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Dmitriy-boytsev)
-

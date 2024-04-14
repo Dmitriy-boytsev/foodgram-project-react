@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import UniqueConstraint
 
 from users.models import User
-
 from .constants import IngredientConstants, RecipeConstants, TagConstants
 
 
@@ -38,17 +37,16 @@ class Tag(models.Model):
         verbose_name='Цвет',
         max_length=TagConstants.COLOR_LENGTH_MAX,
         unique=True,
-        db_index=False,
     )
     slug = models.SlugField(
         verbose_name='Слаг',
         unique=True,
-        db_index=False,
     )
 
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'теги'
+        ordering = ['name']
 
     def __str__(self):
         return f'{self.name} (цвет: {self.color})'
@@ -135,7 +133,7 @@ class Recipe(models.Model):
 class Favorite(ShoppingFavorite):
     """Модель избранных рецептов."""
 
-    class Meta:
+    class Meta(ShoppingFavorite.Meta):
         verbose_name = 'Избранное'
         verbose_name_plural = 'избранные'
         default_related_name = 'favorites'

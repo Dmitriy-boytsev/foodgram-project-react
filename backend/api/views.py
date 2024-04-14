@@ -45,9 +45,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
     def get_serializer_class(self):
         if self.request.method in permissions.SAFE_METHODS:
             return RecipeGetSerializer
@@ -61,6 +58,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
 
     @action(methods=('POST',), detail=True)
     def favorite(self, request, pk):
@@ -81,18 +79,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=('get',),
             permission_classes=(permissions.IsAuthenticated,))
     def download_shopping_cart(self, request):
-        serializer = ShoppingCartDownloadSerializer(
-            data={'user': request.user.id},
-            context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = request.user
-        ingredients = RecipeIngredient.objects.filter(
-            recipe__shopping_cart__user=request.user
+        ingredients = self.get_shopping_cart_items(request.user)
+        shopping_list_text = self.prepare_shopping_list_text(ingredients, request.user)
+        return self.download_shopping_list(shopping_list_text, request.user)
+
+    def get_shopping_cart_items(self, user):
+        return RecipeIngredient.objects.filter(
+            recipe__shopping_cart__user=user
         ).values(
             'ingredients__name',
             'ingredients__measurement_unit'
         ).annotate(amount=Sum('amount'))
 
+    def prepare_shopping_list_text(self, ingredients, user):
         today = datetime.today()
         user_full_name = user.get_full_name()
         shopping_list = f'Список покупок для {user_full_name}\n\n'
@@ -104,11 +103,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             for ingredient in ingredients
         ))
         shopping_list += f'\n\nFoodgram ({today:%Y})'
+        return shopping_list
 
+    def download_shopping_list(self, shopping_list_text, user):
         filename = f'{user.username}_shopping_list.txt'
-        response = HttpResponse(shopping_list, content_type='text/plain')
+        response = HttpResponse(shopping_list_text, content_type='text/plain')
         response['Content-Disposition'] = f'attachment; filename={filename}'
-
         return response
 
     def delete_recipe(self, model, user, pk):

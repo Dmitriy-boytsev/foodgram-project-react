@@ -77,7 +77,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 
     list_display = ('user', 'recipe',)
     list_filter = ('user', 'recipe',)
-    search_fields = ('user', 'recipe',)
+    search_fields = ('user__username', 'recipe__title',)
     empty_value_display = '-пусто-'
 
 

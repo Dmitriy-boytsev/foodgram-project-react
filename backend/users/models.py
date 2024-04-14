@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import RegexValidator
 
 from .constants import UsersConstants
 
@@ -14,10 +15,16 @@ class User(AbstractUser):
         unique=True,
         max_length=UsersConstants.EMAIL_LENGTH_MAX,
     )
+    username_regex = RegexValidator(
+        regex=r'^(?!me$)[a-zA-Z0-9]+$',
+        message="Имя пользователя не может быть 'me' и должно содержать только буквы и цифры.",
+        code='invalid_username'
+    )
     username = models.CharField(
         verbose_name='Имя пользователя',
         unique=True,
         max_length=UsersConstants.NAME_LENGTH_MAX,
+        validators=[username_regex]
     )
     first_name = models.CharField(
         verbose_name='Имя',
@@ -31,6 +38,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'пользователи'
+        ordering = ['username']
 
     def __str__(self):
         return self.username

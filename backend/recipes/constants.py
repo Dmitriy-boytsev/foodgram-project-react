@@ -14,3 +14,7 @@ class RecipeConstants:
     NAME_LENGTH_MAX = 200
     COOK_TIME_MIN = 1
     COOK_TIME_MAX = 24 * 60
+
+
+class SettingsConstants:
+    PAGE_SIZE = 6

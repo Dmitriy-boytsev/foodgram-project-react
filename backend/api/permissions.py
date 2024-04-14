@@ -5,6 +5,10 @@ class IsAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
     """
     Дает доступ к объекту только автору.
     Чтение доступно всем пользователям.
+
+    Реализация:
+    Этот разрешительный класс расширяет IsAuthenticatedOrReadOnly,
+    чтобы дать доступ к объекту только его автору.
     """
 
     def has_object_permission(self, request, view, obj):
