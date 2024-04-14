@@ -1,7 +1,7 @@
 from django_filters.rest_framework import FilterSet, filters
 from rest_framework.filters import SearchFilter
 
-from recipes.models import Recipe, Tag 
+from recipes.models import Recipe, Tag
 
 
 class IngredientSearchFilter(SearchFilter):
@@ -29,9 +29,11 @@ class RecipeFilter(FilterSet):
     is_in_shopping_cart = filters.BooleanFilter(
         method='filter_is_in_shopping_cart'
     )
+
     class Meta:
         model = Recipe
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
+
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
         tags = self.request.query_params.getlist('tags')

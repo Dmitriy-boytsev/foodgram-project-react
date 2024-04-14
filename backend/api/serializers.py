@@ -1,7 +1,4 @@
-import base64
-
 from django.contrib.auth import get_user_model
-from django.core.files.base import ContentFile
 from django.db.models import F
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
@@ -92,7 +89,9 @@ class SubscriptionSerializer(UsersSerializer):
             except ValueError:
                 return []
             recipes = recipes[:limit]
-        serializer = MiniRecipeSerializer(recipes, many=True, read_only=True, context=self.context)
+        serializer = MiniRecipeSerializer(
+            recipes, many=True, read_only=True, context=self.context
+        )
         return serializer.data
 
 
@@ -150,7 +149,9 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
     def validate_id(self, id_value):
         if not Ingredient.objects.filter(id=id_value).exists():
-            raise serializers.ValidationError('Данный ингредиент не существует!')
+            raise serializers.ValidationError(
+                'Данный ингредиент не существует!'
+            )
         return id_value
 
     def validate_amount(self, amount_value):
@@ -167,13 +168,14 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
         return amount_value
 
 
-
 class RecipeIngredientDetailSerializer(serializers.ModelSerializer):
     """Сериализатор детальной информации об ингредиентах в рецепте."""
 
     id = serializers.IntegerField(source='ingredients.id')
     name = serializers.CharField(source='ingredients.name')
-    measurement_unit = serializers.CharField(source='ingredients.measurement_unit')
+    measurement_unit = serializers.CharField(
+        source='ingredients.measurement_unit'
+    )
     amount = serializers.IntegerField()
 
     class Meta:
@@ -186,7 +188,9 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
     tags = TagSerializer(many=True, read_only=True)
     author = UserSerializer(read_only=True)
-    ingredients = RecipeIngredientDetailSerializer(source='recipe_ingredients', many=True)
+    ingredients = RecipeIngredientDetailSerializer(
+        source='recipe_ingredients', many=True
+    )
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
 
@@ -216,12 +220,16 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
-        return user.is_authenticated and user.favorites.filter(recipe=obj).exists()
+        return user.is_authenticated and user.favorites.filter(
+            recipe=obj
+        ).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
-        return user.is_authenticated and user.shopping_cart.filter(recipe=obj).exists()
-    
+        return user.is_authenticated and user.shopping_cart.filter(
+            recipe=obj
+        ).exists()
+
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
@@ -259,9 +267,13 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 'recipe_ingredients': 'Поле ингредиентов обязательно!'
             })
-        ingredient_ids = [ingredient['ingredients']['id'] for ingredient in ingredients_data]
+        ingredient_ids = [
+            ingredient['ingredients']['id'] for ingredient in ingredients_data
+        ]
         if len(ingredient_ids) != len(set(ingredient_ids)):
-            raise serializers.ValidationError('Ингредиенты не могут повторяться!')
+            raise serializers.ValidationError(
+                'Ингредиенты не могут повторяться!'
+            )
         tags_data = data.get('tags')
         if not tags_data:
             raise serializers.ValidationError({
@@ -287,8 +299,9 @@ class RecipeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tags_data = validated_data.pop('tags')
         ingredients_data = validated_data.pop('recipe_ingredients')
-        user = self.context['request'].user
-        recipe = Recipe.objects.create(author=self.context['request'].user, **validated_data)
+        recipe = Recipe.objects.create(
+            author=self.context['request'].user, **validated_data
+        )
         self.create_ingredients(recipe, ingredients_data)
         self.create_tags(recipe, tags_data)
         return recipe

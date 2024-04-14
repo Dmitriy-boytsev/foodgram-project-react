@@ -15,7 +15,6 @@ from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (FavoriteSerializer, IngredientSerializer,
                              RecipeGetSerializer, RecipeSerializer,
-                             ShoppingCartDownloadSerializer,
                              ShoppingCartSerializer,
                              SubscriptionCreateSerializer,
                              SubscriptionSerializer, TagSerializer)
@@ -58,7 +57,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
 
     @action(methods=('POST',), detail=True)
     def favorite(self, request, pk):
@@ -80,7 +78,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=(permissions.IsAuthenticated,))
     def download_shopping_cart(self, request):
         ingredients = self.get_shopping_cart_items(request.user)
-        shopping_list_text = self.prepare_shopping_list_text(ingredients, request.user)
+        shopping_list_text = self.prepare_shopping_list_text(
+            ingredients, request.user
+        )
         return self.download_shopping_list(shopping_list_text, request.user)
 
     def get_shopping_cart_items(self, user):
