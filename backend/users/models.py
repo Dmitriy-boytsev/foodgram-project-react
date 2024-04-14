@@ -17,7 +17,7 @@ class User(AbstractUser):
     )
     username_regex = RegexValidator(
         regex=r'^(?!me$)[a-zA-Z0-9]+$',
-        message="Имя пользователя не может быть 'me' и должно содержать только буквы и цифры.",
+        message='Имя пользователя не может быть "me"',
         code='invalid_username'
     )
     username = models.CharField(
