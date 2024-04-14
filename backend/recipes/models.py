@@ -3,8 +3,11 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
+from .constants import(
+    IngredientConstants, RecipeConstants, TagConstants
+)
 from users.models import User
-from .constants import IngredientConstants, RecipeConstants, TagConstants
+
 
 class ShoppingFavorite(models.Model):
     """Абстрактный класс для Избанного и Покупок."""
