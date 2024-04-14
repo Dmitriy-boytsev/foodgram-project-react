@@ -6,7 +6,6 @@ from django.db.models import UniqueConstraint
 from users.models import User
 from .constants import IngredientConstants, RecipeConstants, TagConstants
 
-
 class ShoppingFavorite(models.Model):
     """Абстрактный класс для Избанного и Покупок."""
 
