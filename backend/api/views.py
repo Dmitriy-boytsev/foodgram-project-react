@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from api.filters import IngredientSearchFilter, RecipeFilter
-from api.pagination import CustomPagination
+from api.pagination import LimitPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (FavoriteSerializer, IngredientSerializer,
                              RecipeGetSerializer, RecipeSerializer,
@@ -40,7 +40,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeGetSerializer
     permission_classes = (IsAuthorOrReadOnly,)
-    pagination_class = CustomPagination
+    pagination_class = LimitPagination
     filter_backends = (DjangoFilterBackend,)
     filter_class = RecipeFilter
 
@@ -133,7 +133,7 @@ class UserViewSet(UserViewSet):
     """Вьюсет для пользователей."""
 
     queryset = User.objects.all()
-    pagination_class = CustomPagination
+    pagination_class = LimitPagination
 
     def get_permissions(self):
         if self.action == 'me':
