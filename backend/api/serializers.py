@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db.models import F
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
@@ -45,9 +44,9 @@ class UsersSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if request.user.is_authenticated:
-            return obj.following.filter(user_id=request.user.id).exists()
-        return False
+        return request.user.is_authenticated and obj.following.filter(
+            user_id=request.user.id
+        ).exists()
 
 
 class MiniRecipeSerializer(serializers.ModelSerializer):
@@ -83,12 +82,8 @@ class SubscriptionSerializer(UsersSerializer):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
-        if limit:
-            try:
-                limit = int(limit)
-            except ValueError:
-                return []
-            recipes = recipes[:limit]
+        if limit and limit.isdigit():
+            recipes = recipes[:int(limit)]
         serializer = MiniRecipeSerializer(
             recipes, many=True, read_only=True, context=self.context
         )
@@ -183,7 +178,7 @@ class RecipeIngredientDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
-class RecipeGetSerializer(serializers.ModelSerializer):
+class RecipeGetCreateSerializer(serializers.ModelSerializer):
     """Сериализатор рецептов для безопасных запросов."""
 
     tags = TagSerializer(many=True, read_only=True)
@@ -207,15 +202,6 @@ class RecipeGetSerializer(serializers.ModelSerializer):
             'image',
             'text',
             'cooking_time',
-        )
-
-    def get_ingredients(self, obj):
-        recipe = obj
-        return recipe.ingredients.values(
-            'id',
-            'name',
-            'measurement_unit',
-            amount=F('recipe_ingredients__amount')
         )
 
     def get_is_favorited(self, obj):
@@ -319,7 +305,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
-        return RecipeGetSerializer(instance, context=context).data
+        return RecipeGetCreateSerializer(instance, context=context).data
 
 
 class BaseRecipeActionSerializer(serializers.ModelSerializer):

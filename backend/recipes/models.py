@@ -4,8 +4,9 @@ from django.db import models
 from django.db.models import UniqueConstraint
 
 from users.models import User
-
-from .constants import IngredientConstants, RecipeConstants, TagConstants
+from recipes.constants import (
+    IngredientConstants, RecipeConstants, TagConstants
+)
 
 
 class ShoppingFavorite(models.Model):
@@ -24,6 +25,7 @@ class ShoppingFavorite(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['user', 'recipe']
 
 
 class Tag(models.Model):
@@ -68,6 +70,7 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'ингредиенты'
+        ordering = ['name']
         constraints = [
             models.UniqueConstraint(
                 fields=['name', 'measurement_unit'],
@@ -122,10 +125,15 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Автор',
     )
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата публикации',
+    )
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'рецепты'
+        ordering = ['-pub_date']
 
     def __str__(self):
         return self.name
