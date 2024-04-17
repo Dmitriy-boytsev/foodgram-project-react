@@ -216,13 +216,6 @@ class RecipeGetSerializer(serializers.ModelSerializer):
             recipe=obj
         ).exists()
 
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = request.user
-        validated_data['author'] = user
-        recipe = Recipe.objects.create(**validated_data)
-        return recipe
-
 
 class RecipeSerializer(serializers.ModelSerializer):
     """Сериализатор рецептов."""
