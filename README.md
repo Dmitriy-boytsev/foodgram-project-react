@@ -48,7 +48,7 @@
 - #### https://diplompraktikum.ddns.net/
 
 ##  Cсылка на документацию в сети: 
-- #### https://diplompraktikum.ddns.net/api/docs
+- #### https://diplompraktikum.ddns.net/api/docs/
 
 
 ## Как развернуть: 

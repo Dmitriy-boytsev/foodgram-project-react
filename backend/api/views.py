@@ -14,7 +14,7 @@ from api.filters import IngredientSearchFilter, RecipeFilter
 from api.pagination import LimitPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (FavoriteSerializer, IngredientSerializer,
-                             RecipeGetCreateSerializer, RecipeSerializer,
+                             RecipeGetSerializer, RecipeSerializer,
                              ShoppingCartSerializer,
                              SubscriptionCreateSerializer,
                              SubscriptionSerializer, TagSerializer)
@@ -38,7 +38,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """Вьюсет для рецептов."""
 
     queryset = Recipe.objects.all()
-    serializer_class = RecipeGetCreateSerializer
+    serializer_class = RecipeGetSerializer
     permission_classes = (IsAuthorOrReadOnly,)
     pagination_class = LimitPagination
     filter_backends = (DjangoFilterBackend,)
@@ -46,7 +46,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method in permissions.SAFE_METHODS:
-            return RecipeGetCreateSerializer
+            return RecipeGetSerializer
         return RecipeSerializer
 
     def perform_action(self, serializer_class, user, pk):

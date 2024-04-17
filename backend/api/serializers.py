@@ -178,7 +178,7 @@ class RecipeIngredientDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
-class RecipeGetCreateSerializer(serializers.ModelSerializer):
+class RecipeGetSerializer(serializers.ModelSerializer):
     """Сериализатор рецептов для безопасных запросов."""
 
     tags = TagSerializer(many=True, read_only=True)
@@ -305,7 +305,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
-        return RecipeGetCreateSerializer(instance, context=context).data
+        return RecipeGetSerializer(instance, context=context).data
 
 
 class BaseRecipeActionSerializer(serializers.ModelSerializer):
