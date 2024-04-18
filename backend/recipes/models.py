@@ -3,10 +3,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
-from users.models import User
 from recipes.constants import (
     IngredientConstants, RecipeConstants, TagConstants
 )
+from users.models import User
 
 
 class ShoppingFavorite(models.Model):
@@ -158,7 +158,7 @@ class Favorite(ShoppingFavorite):
 class ShoppingCart(ShoppingFavorite):
     """Модель корзины покупок."""
 
-    class Meta:
+    class Meta(ShoppingFavorite.Meta):
         verbose_name = 'Корзина покупок'
         verbose_name_plural = 'корзина покупок'
         default_related_name = 'shopping_cart'
@@ -206,6 +206,7 @@ class RecipeIngredient(models.Model):
             models.UniqueConstraint(fields=('ingredients', 'recipe'),
                                     name='unique_recipe_ingredients'),
         )
+        ordering = ['recipe', 'ingredients']
 
     def __str__(self):
         return (
